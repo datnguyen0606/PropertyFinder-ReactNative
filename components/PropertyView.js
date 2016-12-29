@@ -20,14 +20,11 @@ class PropertyView extends Component {
   }
 
   componentDidMount() {
-    Image.getSize(this.props.property.img_url, (srcWidth, srcHeight) => {
-      const maxWidth = Dimensions.get('window').width;
-      const ratio = srcHeight / srcWidth;
-      const height = maxWidth * ratio;
-      this.setState({width: maxWidth, height: height});
-    }, error => {
-      console.log('error:', error);
-    });
+    let property = this.props.property;
+    const maxWidth = Dimensions.get('window').width;
+    const ratio = property.img_height / property.img_width;
+    const height = maxWidth * ratio;
+    this.setState({width: maxWidth, height: height});
   }
 
   render() {
@@ -39,7 +36,12 @@ class PropertyView extends Component {
     }
 
     const price = property.price_formatted.split(' ')[0];
-    const pw = (property.price_type == 'weekly') ? 'pw' : 'pm';
+    let pw = 'pm';
+    if (property.price_type == 'fixed') {
+      pw = '';
+    } else if (property.price_type == 'weekly') {
+      pw = 'pw';
+    }
     return (
       <ScrollView style={styles.container}>
         <Image style={{ width: this.state.width, height: this.state.height }}
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     margin: 5,
-    color: '#48BBEC'
+    color: '#009688'
   },
   title: {
     fontSize: 18,

@@ -41,7 +41,12 @@ class SearchResults extends Component {
 
   renderRow(rowData, sectionID, rowID) {
     const price = rowData.price_formatted.split(' ')[0];
-    const pw = (rowData.price_type == 'weekly') ? 'pw' : 'pm';
+    let pw = 'pm';
+    if (rowData.price_type == 'fixed') {
+      pw = '';
+    } else if (rowData.price_type == 'weekly') {
+      pw = 'pw';
+    }
     const info = this._rowInfo(rowData);
 
     return (
